@@ -1,0 +1,14 @@
+node_modules/
+out/
+.vscode-test/
+*.vsix
+.DS_Store
+*.log
+
+# Webview build artifacts (if any)
+dist/
+
+# Python scripts virtual environment (if used locally)
+__pycache__/
+venv/
+.env

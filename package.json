@@ -1,0 +1,123 @@
+{
+  "name": "monsterverse-pet-companion",
+  "displayName": "Monsterverse Pet Companion",
+  "description": "Interactive Monsterverse creature companions that react to your coding activity inside VS Code.",
+  "version": "1.0.0",
+  "publisher": "monsterverse-dev",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "pet",
+    "godzilla",
+    "kong",
+    "monsterverse",
+    "companion",
+    "fun"
+  ],
+  "icon": "media/icon.png",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "monsterverse.selectGodzilla",
+        "title": "Monsterverse: Select Godzilla",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.selectKong",
+        "title": "Monsterverse: Select Kong",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.selectGhidorah",
+        "title": "Monsterverse: Select Ghidorah",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.selectRodan",
+        "title": "Monsterverse: Select Rodan",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.selectMechagodzilla",
+        "title": "Monsterverse: Select Mechagodzilla",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.selectMuto",
+        "title": "Monsterverse: Select MUTO",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.selectScylla",
+        "title": "Monsterverse: Select Scylla",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.togglePanel",
+        "title": "Monsterverse: Toggle Pet Panel",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.resetMood",
+        "title": "Monsterverse: Reset Mood State",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.showPanel",
+        "title": "Monsterverse: Show Pet Panel",
+        "icon": "$(hubot)",
+        "category": "Monsterverse"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "monsterverse-sidebar",
+          "title": "Monsterverse Pet",
+          "icon": "media/sidebar-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "monsterverse-sidebar": [
+        {
+          "type": "webview",
+          "id": "monsterverse.petView",
+          "name": "Pet Companion",
+          "retainContextWhenHidden": true
+        }
+      ]
+    },
+    "menus": {
+      "editor/title": [
+        {
+          "command": "monsterverse.showPanel",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.3.0"
+  }
+}

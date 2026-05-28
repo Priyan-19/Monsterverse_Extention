@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none';
+             style-src {{CSP_SOURCE}} 'unsafe-inline' https://fonts.googleapis.com;
+             font-src https://fonts.gstatic.com;
+             script-src 'nonce-{{NONCE}}' {{CSP_SOURCE}};
+             img-src {{CSP_SOURCE}} data:;" />
+  <title>Monsterverse Pet</title>
+  <link rel="stylesheet" href="{{CSS_URI}}" />
+  <style>
+    :root {
+      --primary: {
+          {
+          PRIMARY_COLOR
+        }
+      }
+
+      ;
+
+      --secondary: {
+          {
+          SECONDARY_COLOR
+        }
+      }
+
+      ;
+
+      --accent: {
+          {
+          ACCENT_COLOR
+        }
+      }
+
+      ;
+
+      --glow: {
+          {
+          GLOW_COLOR
+        }
+      }
+
+      ;
+
+      --anim-speed: calc({
+          {
+          ANIM_SPEED
+        }
+      }
+
+      * 1s);
+    }
+  </style>
+</head>
+
+<body class="mood-idle" 
+      data-monster="{{MONSTER_ID}}" 
+      data-jitter="{{JITTER}}" 
+      data-flyer="{{IS_FLYER}}"
+      data-sprites-map='{{MONSTER_SPRITES_MAP}}'
+      data-flyer-map='{{IS_FLYER_MAP}}'>
+
+  <div id="app">
+    <!-- Stats bar -->
+    <div id="top-bar">
+      <div id="mood-dot"></div>
+      <span id="mood-label">IDLE</span>
+      <span style="flex:1"></span>
+      <span id="stat-score" title="Activity Score">0</span>
+      <span id="stat-evolution" class="badge">BASE</span>
+    </div>
+
+    <!-- Stage: monsters are dynamically created here by JS -->
+    <div id="monster-stage">
+      <!-- Global FX overlay (VICTORY/RAAWR popups) -->
+      <div id="mood-fx"></div>
+    </div>
+
+    <!-- Controls -->
+    <div id="controls-bar">
+      <select id="monster-select">
+        <option value="godzilla">Godzilla</option>
+        <option value="kong">Kong</option>
+        <option value="ghidorah">Ghidorah</option>
+        <option value="rodan">Rodan</option>
+        <option value="mechagodzilla">Mechagodzilla</option>
+        <option value="muto">MUTO</option>
+        <option value="scylla">Scylla</option>
+      </select>
+      <button id="btn-add" title="Spawn selected monster">＋</button>
+      <button id="btn-poke" title="Poke all monsters">Poke</button>
+      <button id="btn-clear" title="Remove all monsters">Clear</button>
+    </div>
+  </div>
+
+  <script nonce="{{NONCE}}" src="{{JS_URI}}"></script>
+</body>
+
+</html>
