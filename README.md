@@ -65,7 +65,6 @@ The application follows a **modern, event-driven architecture**:
 - **Typing** → Titans notice when you are hard at work coding.
 - **Errors** → They get furious when they detect bugs or lint errors in your code!
 - **Idle** → They pace around and make idle chatter during your breaks.
-- **Sleeping** → If you step away, your Titan will eventually fall asleep.
 
 ### 🌍 Epic Titan Roster
 - 🦖 **Godzilla**: The King of the Monsters.
@@ -137,16 +136,14 @@ npm run compile
 
 ## 📊 Extension Commands
 
-Access these commands through the VS Code Command Palette:
+Access these commands through the VS Code Command Palette or via the native icons in the **Monsterverse Pet** sidebar panel header:
 
 | Command | Description |
 |--------|-------------|
 | `Monsterverse: Toggle Pet Panel` | Opens or closes the monster viewing panel. |
-| `Monsterverse: Select Godzilla` | Immediately spawns Godzilla. |
-| `Monsterverse: Select Kong` | Immediately spawns Kong. |
-| `Monsterverse: Select Ghidorah` | Immediately spawns Ghidorah. |
-| `Monsterverse: Select Mechagodzilla` | Immediately spawns Mechagodzilla. |
-| `Monsterverse: Select Rodan`, etc. | Spawns specific Titans instantly. |
+| `Monsterverse: Add Monster` | Opens a Quick Pick menu to choose and spawn a specific Titan. |
+| `Monsterverse: Poke Monsters` | Interacts with all active Titans on the screen. |
+| `Monsterverse: Clear Monsters` | Opens a menu to selectively remove a specific Titan from the screen. |
 
 ---
 

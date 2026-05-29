@@ -20,8 +20,6 @@ import {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-/** Milliseconds of silence before the monster falls asleep. */
-const SLEEP_TIMEOUT_MS = 60_000;
 
 /** How many error-free saves to calm down from "angry". */
 const ANGER_COOL_SAVES = 3;
@@ -59,7 +57,6 @@ export class ActivityTracker extends EventEmitter {
   private disposables: vscode.Disposable[] = [];
 
   // Timers
-  private sleepTimer: NodeJS.Timeout | undefined;
   private sessionTimer: NodeJS.Timeout | undefined;
 
   /** Current monster – used to read personality-specific modifiers. */
@@ -71,7 +68,6 @@ export class ActivityTracker extends EventEmitter {
     this.activityScore = savedScore;
     this._registerListeners();
     this._startSessionTimer();
-    this._resetSleepTimer();
   }
 
   // ─── Public API ─────────────────────────────────────────────────────────────
@@ -112,7 +108,6 @@ export class ActivityTracker extends EventEmitter {
   /** Tear down all listeners and timers. */
   public dispose(): void {
     this.disposables.forEach(d => d.dispose());
-    if (this.sleepTimer) { clearTimeout(this.sleepTimer); }
     if (this.sessionTimer) { clearInterval(this.sessionTimer); }
     this.removeAllListeners();
   }
@@ -166,8 +161,8 @@ export class ActivityTracker extends EventEmitter {
     this.activityScore += SCORE.type;
     this._touch();
 
-    // Only switch to typing mood if we're idle or sleeping
-    if (this.mood === 'idle' || this.mood === 'sleeping' || this.mood === 'alert') {
+    // Only switch to typing mood if we're idle or alert
+    if (this.mood === 'idle' || this.mood === 'alert') {
       this._setMood('typing');
     }
   }
@@ -200,7 +195,7 @@ export class ActivityTracker extends EventEmitter {
   private _onFileOpen(): void {
     this.activityScore += SCORE.open;
     this._touch();
-    if (this.mood === 'sleeping') {
+    if (this.mood === 'idle') {
       this._setMood('alert');
       setTimeout(() => {
         if (this.mood === 'alert') { this._setMood('idle'); }
@@ -227,16 +222,6 @@ export class ActivityTracker extends EventEmitter {
 
   private _touch(): void {
     this.lastActivityTime = Date.now();
-    this._resetSleepTimer();
-  }
-
-  private _resetSleepTimer(): void {
-    if (this.sleepTimer) { clearTimeout(this.sleepTimer); }
-    this.sleepTimer = setTimeout(() => {
-      if (this.mood !== 'sleeping') {
-        this._setMood('sleeping');
-      }
-    }, SLEEP_TIMEOUT_MS);
   }
 
   // ─── Session Timer (emits every 10 s to update session clock in UI) ───────

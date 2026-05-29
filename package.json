@@ -75,6 +75,24 @@
         "title": "Monsterverse: Show Pet Panel",
         "icon": "$(hubot)",
         "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.addMonster",
+        "title": "Monsterverse: Add Monster",
+        "icon": "$(add)",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.pokeMonsters",
+        "title": "Monsterverse: Poke Monsters",
+        "icon": "$(target)",
+        "category": "Monsterverse"
+      },
+      {
+        "command": "monsterverse.clearMonsters",
+        "title": "Monsterverse: Clear Monsters",
+        "icon": "$(trash)",
+        "category": "Monsterverse"
       }
     ],
     "viewsContainers": {
@@ -101,6 +119,23 @@
         {
           "command": "monsterverse.showPanel",
           "group": "navigation"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "monsterverse.addMonster",
+          "when": "view == monsterverse.petView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "monsterverse.pokeMonsters",
+          "when": "view == monsterverse.petView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "monsterverse.clearMonsters",
+          "when": "view == monsterverse.petView",
+          "group": "navigation@3"
         }
       ]
     }

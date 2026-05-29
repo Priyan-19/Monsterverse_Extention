@@ -17,6 +17,9 @@ export interface CommandCallbacks {
   togglePanel: () => void;
   resetMood: () => void;
   showPanel: () => void;
+  addMonster: (id: MonsterId) => void;
+  pokeMonsters: () => void;
+  removeMonsterMenu: () => void;
 }
 
 // ─── Registration ─────────────────────────────────────────────────────────────
@@ -117,6 +120,39 @@ export function registerCommands(
         );
       },
     ],
+
+    // ── Native UI Controls ────────────────────────────────────────────────
+    [
+      'monsterverse.addMonster',
+      async () => {
+        const monsters: { label: string; description: string; id: MonsterId }[] = [
+          { label: 'Godzilla', description: 'King of the Monsters', id: 'godzilla' },
+          { label: 'Kong', description: 'King of Skull Island', id: 'kong' },
+          { label: 'Ghidorah', description: 'The False King', id: 'ghidorah' },
+          { label: 'Rodan', description: 'The Fire Demon', id: 'rodan' },
+          { label: 'Mechagodzilla', description: 'Apex Predator', id: 'mechagodzilla' },
+          { label: 'MUTO', description: 'Massive Unidentified Terrestrial Organism', id: 'muto' },
+          { label: 'Scylla', description: 'Titanus Scylla', id: 'scylla' },
+        ];
+
+        const selected = await vscode.window.showQuickPick(monsters, {
+          placeHolder: 'Select a Titan to spawn...',
+          matchOnDescription: true
+        });
+
+        if (selected) {
+          callbacks.addMonster(selected.id);
+        }
+      }
+    ],
+    [
+      'monsterverse.pokeMonsters',
+      () => callbacks.pokeMonsters(),
+    ],
+    [
+      'monsterverse.clearMonsters',
+      () => callbacks.removeMonsterMenu(),
+    ]
   ];
 
   // Register every command and push into extension context for cleanup

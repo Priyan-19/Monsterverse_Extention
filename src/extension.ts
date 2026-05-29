@@ -56,11 +56,18 @@ class PetPanel {
   private readonly _view: vscode.WebviewView;
   private readonly _extensionUri: vscode.Uri;
   private _monsterId: MonsterId;
+  private _activeMonsters: { instanceId: string, monsterId: MonsterId, name: string }[] = [];
+  private _instanceCounter = 1;
 
   constructor(view: vscode.WebviewView, extensionUri: vscode.Uri, monsterId: MonsterId) {
     this._view = view;
     this._extensionUri = extensionUri;
     this._monsterId = monsterId;
+    this._activeMonsters.push({
+      instanceId: 'instance-0',
+      monsterId: monsterId,
+      name: getMonster(monsterId).displayName
+    });
 
     view.webview.options = {
       enableScripts: true,
@@ -106,6 +113,55 @@ class PetPanel {
   /** Reveal the sidebar panel. */
   public reveal(): void {
     this._view.show?.(true);
+  }
+
+  public addMonster(id: MonsterId): void {
+    const instanceId = `instance-${this._instanceCounter++}`;
+    const name = getMonster(id).displayName;
+    this._activeMonsters.push({ instanceId, monsterId: id, name });
+    
+    this._view.webview.postMessage({
+      type: 'ADD_MONSTER',
+      monster: id,
+      instanceId: instanceId
+    });
+  }
+
+  public pokeMonsters(): void {
+    this._view.webview.postMessage({
+      type: 'POKE_MONSTERS'
+    });
+  }
+
+  public async removeMonsterMenu(): Promise<void> {
+    if (this._activeMonsters.length === 0) {
+      vscode.window.showInformationMessage('No active Titans to remove!');
+      return;
+    }
+
+    // Tally up counts for numbering
+    const typeCounts: Record<string, number> = {};
+    const items = this._activeMonsters.map(m => {
+      typeCounts[m.monsterId] = (typeCounts[m.monsterId] || 0) + 1;
+      return {
+        label: `${m.name} (${typeCounts[m.monsterId]})`,
+        description: 'Active Titan',
+        instanceId: m.instanceId
+      };
+    });
+
+    const selected = await vscode.window.showQuickPick(items, {
+      placeHolder: 'Select the pet to remove...',
+      matchOnDescription: true
+    });
+
+    if (selected) {
+      this._view.webview.postMessage({
+        type: 'REMOVE_MONSTER',
+        instanceId: selected.instanceId
+      });
+      this._activeMonsters = this._activeMonsters.filter(m => m.instanceId !== selected.instanceId);
+    }
   }
 
   // ─── HTML Generation ──────────────────────────────────────────────────────
@@ -251,6 +307,17 @@ export function activate(context: vscode.ExtensionContext): void {
     resetMood: () => {
       tracker.resetMood();
     },
+    addMonster: (id: MonsterId) => {
+      activePetPanel?.addMonster(id);
+      tracker.setMonster(id); // optional: update the tracker to the newly added monster
+      context.globalState.update(KEY_MONSTER, id);
+    },
+    pokeMonsters: () => {
+      activePetPanel?.pokeMonsters();
+    },
+    removeMonsterMenu: () => {
+      activePetPanel?.removeMonsterMenu();
+    }
   });
 
   // ── Cleanup ───────────────────────────────────────────────────────────────

@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap');
 
 :root {
-  --bg-dark: #1e1e1e;
-  --bg-panel: #252526;
-  --border: #333333;
-  --text: #cccccc;
-  --comic-ink: #000000;
+  --bg-dark: var(--vscode-sideBar-background, var(--vscode-editor-background, #1e1e1e));
+  --bg-panel: var(--vscode-sideBarSectionHeader-background, var(--vscode-editorGroupHeader-tabsBackground, #252526));
+  --border: var(--vscode-sideBarSectionHeader-border, var(--vscode-widget-border, #333333));
+  --text: var(--vscode-foreground, #cccccc);
+  --comic-ink: var(--vscode-editor-foreground, #000000);
 }
 
 html,
@@ -29,12 +29,7 @@ body {
 }
 
 #top-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  background: var(--bg-panel);
-  border-bottom: 1px solid var(--border);
+  display: none;
 }
 
 #mood-dot {
@@ -96,8 +91,8 @@ body {
   /* sit on the floor line */
   left: 50%;
   /* initial position */
-  width: 60px;
-  height: 60px;
+  width: 120px;
+  height: 120px;
   /* translation applied by JS */
   transform: translateX(-50%);
   z-index: 10;
@@ -122,14 +117,7 @@ body {
   max-height: 100%;
   object-fit: contain;
   pointer-events: none;
-}
-
-#controls-bar {
-  display: flex;
-  gap: 5px;
-  padding: 6px 10px;
-  background: var(--bg-panel);
-  border-top: 1px solid var(--border);
+  image-rendering: pixelated;
 }
 
 select,

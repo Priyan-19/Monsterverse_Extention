@@ -39,7 +39,6 @@
   const moodLabel = document.getElementById('mood-label');
   const statScore = document.getElementById('stat-score');
   const statEvolution = document.getElementById('stat-evolution');
-  const monsterSelect = document.getElementById('monster-select');
 
   // ─── Monster Configuration Data ─────────────────────────────────────────────
   const MONSTER_CONFIGS = {
@@ -194,8 +193,9 @@
 
   // ─── Monster Instance Class ─────────────────────────────────────────────────
   class Monster {
-    constructor(id, x) {
+    constructor(id, x, instanceId) {
       this.id = id;
+      this.instanceId = instanceId;
       this.config = MONSTER_CONFIGS[id] || MONSTER_CONFIGS.godzilla;
       this.isFlyer = !!this.config.isFlyer;
 
@@ -285,7 +285,6 @@
     }
 
     getRenderState() {
-      if (this.currentMood === 'sleeping') return 'sleeping';
       if (['typing', 'alert', 'angry', 'victory', 'happy'].includes(this.currentMood)) return 'react';
 
       if (Math.abs(this.currentX - this.targetX) > 2) {
@@ -300,7 +299,7 @@
     }
 
     wanderLoop() {
-      if (['sleeping', 'typing', 'alert', 'angry', 'victory'].includes(this.currentMood)) {
+      if (['typing', 'alert', 'angry', 'victory'].includes(this.currentMood)) {
         this.isMoving = false;
         this.wanderTimeout = setTimeout(() => this.wanderLoop(), 1000);
         return;
@@ -328,7 +327,7 @@
     }
 
     update(dt) {
-      if (['sleeping', 'typing', 'alert', 'angry', 'victory'].includes(this.currentMood)) {
+      if (['typing', 'alert', 'angry', 'victory'].includes(this.currentMood)) {
         this.targetX = this.currentX;
         return;
       }
@@ -354,7 +353,7 @@
       if (this.currentX < padding) this.currentX = padding;
       if (this.currentX > stageWidth - padding) this.currentX = stageWidth - padding;
 
-      this.element.style.left = `${this.currentX}px`;
+      this.element.style.left = `${Math.round(this.currentX)}px`;
 
       // Vertical bobbing for flyers
       let hoverOffset = 0;
@@ -384,16 +383,12 @@
       } else if (renderState === 'react') {
         rowIdx = 2;
         colIdx = Math.floor(time / 100) % 4;
-      } else if (renderState === 'sleeping') {
-        rowIdx = 3;
-        colIdx = Math.floor(time / 450) % 4;
       } else {
         rowIdx = 0;
         colIdx = Math.floor(time / 250) % 4;
       }
 
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
+      ctx.imageSmoothingEnabled = false;
 
       // Draw the 256x256 frame from the 1024x1024 sheet onto the 512x512 canvas
       ctx.drawImage(
@@ -416,8 +411,6 @@
         this.isMoving = false;
       }
 
-      this.manageSleepZs(mood);
-
       if (message) this.showSpeechBubble(message);
 
       if (mood === 'victory' || mood === 'angry') {
@@ -434,24 +427,7 @@
       }, 2500);
     }
 
-    manageSleepZs(mood) {
-      clearInterval(this.sleepZInterval);
-      this.element.querySelectorAll('.sleep-z').forEach(z => z.remove());
 
-      if (mood === 'sleeping') {
-        this.sleepZInterval = setInterval(() => {
-          const z = document.createElement('div');
-          z.className = 'sleep-z';
-          z.textContent = 'Z';
-          z.style.left = '16px';
-          z.style.top = '4px';
-          z.style.fontSize = `${10 + Math.random() * 5}px`;
-          z.style.animation = 'sleepZ 2s ease-out forwards';
-          this.element.appendChild(z);
-          setTimeout(() => z.remove(), 2000);
-        }, 1200);
-      }
-    }
 
     spawnParticles(mood) {
       for (let i = 0; i < 8; i++) {
@@ -511,8 +487,8 @@
   }
 
   // ─── Helper Functions ───────────────────────────────────────────────────────
-  function spawnMonster(id, x) {
-    const monster = new Monster(id, x);
+  function spawnMonster(id, x, instanceId) {
+    const monster = new Monster(id, x, instanceId);
     activeMonsters.push(monster);
     return monster;
   }
@@ -537,73 +513,48 @@
 
   // ─── Messaging ─────────────────────────────────────────────────────────────
   window.addEventListener('message', (event) => {
-    const msg = event.data;
-    if (!msg) return;
+    const message = event.data;
+    if (!message) return;
 
-    if (msg.type === 'UPDATE_STATE') {
-      // Update top-bar scores
-      statScore.textContent = msg.activityScore.toLocaleString();
-      statEvolution.textContent = msg.evolution.toUpperCase();
+    if (message.type === 'UPDATE_STATE') {
+      const currentMood = message.mood || 'idle';
+      if (typeof moodLabel !== 'undefined' && moodLabel) moodLabel.textContent = currentMood.toUpperCase();
+      if (typeof statScore !== 'undefined' && statScore) statScore.textContent = message.activityScore || 0;
+      if (typeof statEvolution !== 'undefined' && statEvolution) statEvolution.textContent = (message.evolution || 'BASE').toUpperCase();
 
-      if (msg.evolution === 'energized') statEvolution.style.background = '#ffaa00';
-      else if (msg.evolution === 'alpha') statEvolution.style.background = '#ff2200';
-      else statEvolution.style.background = 'var(--accent)';
+      updateActiveTheme(message.monster);
 
-      // Sync active selected values and update parent theme
-      if (msg.monster && msg.monster !== monsterSelect.value) {
-        monsterSelect.value = msg.monster;
-        updateActiveTheme(msg.monster);
+      if (message.message) {
+        showFxPop(message.message);
       }
-
-      // Forward mood reaction to the spawned matching monsters
-      const match = activeMonsters.filter(m => m.id === msg.monster);
+      
+      const match = activeMonsters.filter(m => m.id === message.monster);
       if (match.length > 0) {
-        match.forEach(m => m.setMood(msg.mood, msg.message));
+        match.forEach(m => m.setMood(message.mood, message.message));
       } else if (activeMonsters.length > 0) {
-        // Fallback: apply to the first active monster
-        activeMonsters[0].setMood(msg.mood, msg.message);
+        activeMonsters[0].setMood(message.mood, message.message);
       }
-    }
-
-    if (msg.type === 'SWITCH_MONSTER') {
-      if (msg.monster) {
-        monsterSelect.value = msg.monster;
-        updateActiveTheme(msg.monster);
+    } else if (message.type === 'SWITCH_MONSTER') {
+      updateActiveTheme(message.monster);
+    } else if (message.type === 'ADD_MONSTER') {
+      const stageWidth = monsterStage.clientWidth || 300;
+      const randomX = 12 + Math.random() * (stageWidth - 24);
+      spawnMonster(message.monster, randomX, message.instanceId);
+    } else if (message.type === 'REMOVE_MONSTER') {
+      const targetIndex = activeMonsters.findIndex(m => m.instanceId === message.instanceId);
+      if (targetIndex !== -1) {
+        activeMonsters[targetIndex].destroy();
+        activeMonsters.splice(targetIndex, 1);
       }
+    } else if (message.type === 'POKE_MONSTERS') {
+      showFxPop('POW!');
+      activeMonsters.forEach(m => m.onPoke());
+    } else if (message.type === 'CLEAR_MONSTERS') {
+      clearAllMonsters();
     }
   });
 
-  // ─── UI Interactions ───────────────────────────────────────────────────────
-  monsterSelect.addEventListener('change', (e) => {
-    const id = e.target.value;
-    const cmdMap = {
-      godzilla: 'monsterverse.selectGodzilla',
-      kong: 'monsterverse.selectKong',
-      ghidorah: 'monsterverse.selectGhidorah',
-      rodan: 'monsterverse.selectRodan',
-      mechagodzilla: 'monsterverse.selectMechagodzilla',
-      muto: 'monsterverse.selectMuto',
-      scylla: 'monsterverse.selectScylla'
-    };
-    vscode.postMessage({ command: cmdMap[id] });
-    updateActiveTheme(id);
-  });
-
-  document.getElementById('btn-add').addEventListener('click', () => {
-    const id = monsterSelect.value;
-    const stageWidth = monsterStage.clientWidth || 300;
-    const randomX = 12 + Math.random() * (stageWidth - 24);
-    spawnMonster(id, randomX);
-  });
-
-  document.getElementById('btn-poke').addEventListener('click', () => {
-    showFxPop('POW!');
-    activeMonsters.forEach(m => m.onPoke());
-  });
-
-  document.getElementById('btn-clear').addEventListener('click', () => {
-    clearAllMonsters();
-  });
+  // ─── Events ───────────────────────────────────────────────────────────────
 
   // Handle stage bounds on resize
   window.addEventListener('resize', () => {
@@ -634,11 +585,10 @@
 
   // ─── Initialize ────────────────────────────────────────────────────────────
   const initialMonster = body.dataset.monster || 'godzilla';
-  monsterSelect.value = initialMonster;
   updateActiveTheme(initialMonster);
 
   // Spawn the initial default monster
-  spawnMonster(initialMonster);
+  spawnMonster(initialMonster, undefined, 'instance-0');
 
   requestAnimationFrame(frameLoop);
 

@@ -7,7 +7,7 @@
  */
 
 export type MonsterId = 'godzilla' | 'ghidorah' | 'kong' | 'rodan' | 'mechagodzilla' | 'muto' | 'scylla';
-export type MoodState = 'idle' | 'happy' | 'angry' | 'sleeping' | 'victory' | 'alert' | 'typing';
+export type MoodState = 'idle' | 'happy' | 'angry' | 'victory' | 'alert' | 'typing';
 export type EvolutionStage = 'base' | 'energized' | 'alpha';
 
 export interface MonsterStateMessage {
@@ -34,7 +34,7 @@ export interface MonsterPersonality {
   jitterIntensity: 'low' | 'medium' | 'high' | 'extreme';
   imagePath: string; // Changed from svgProfile to imagePath
   angerThreshold: number;
-  sleepMultiplier: number;
+
   isFlyer?: boolean;
 }
 
@@ -63,13 +63,13 @@ export const MONSTERS: Record<MonsterId, MonsterPersonality> = {
     animationSpeed: 0.6,
     jitterIntensity: 'low',
     angerThreshold: 1.8,
-    sleepMultiplier: 1.2,
+
     imagePath: 'monsters/godzilla_spritesheet.png',
     moodMessages: {
       idle: ['...', 'The Alpha observes.', 'Atomic silence.', 'Staring down the code.'],
       happy: ['SKREEEONK!', 'Nature brings balance.', 'Atomic pulse!', 'A worthy build.'],
       angry: ['RAAWR!', 'Errors disrupt the balance.', 'Atomic breath charging...', 'Unacceptable.'],
-      sleeping: ['*snore*...', 'zzzGODZILLAzzz', 'Resting in the Hollow Earth...'],
+
       victory: ['SKREEEONK!!!', 'LONG LIVE THE KING!', 'Absolute dominance.', 'Victory roar!'],
       alert: ['Something stirs...', 'Titan detected.', 'Dorsal fins glowing...'],
       typing: ['Keystroke by keystroke...', 'Building...', 'Watching.'],
@@ -87,13 +87,13 @@ export const MONSTERS: Record<MonsterId, MonsterPersonality> = {
     animationSpeed: 1.4,
     jitterIntensity: 'high',
     angerThreshold: 0.9,
-    sleepMultiplier: 0.8,
+
     imagePath: 'monsters/kong_spritesheet.png',
     moodMessages: {
       idle: ['*grunt*', 'Watching...', 'Skull Island calm.', '...'],
       happy: ['ROAAAR!', 'KONG APPROVES!', '*chest pound*', 'YES! YES! YES!'],
       angry: ['RAAAAGH!', '*beats chest furiously*', 'KONG ANGRY!', 'FIX BUGS NOW!!!'],
-      sleeping: ['zzzKONGzzz', '*snore snore*', 'Dreaming of home...'],
+
       victory: ['KONG WINS!!!', '*massive chest pound*', 'ALPHA!', 'ROOOOOAR!!!'],
       alert: ['*sniffs air*', 'Something wrong...', '*stands tall*'],
       typing: ['*watches fingers*', 'tap tap tap...', 'Kong sees.'],
@@ -111,14 +111,14 @@ export const MONSTERS: Record<MonsterId, MonsterPersonality> = {
     animationSpeed: 1.1,
     jitterIntensity: 'extreme',
     angerThreshold: 0.6,
-    sleepMultiplier: 1.5,
+
     imagePath: 'monsters/ghidorah_spritesheet.png',
     isFlyer: true,
     moodMessages: {
       idle: ['...we watch...', 'Three minds as one.', 'The void awaits.', '*static*'],
       happy: ['VICTORY!', 'Chaos yields order!', 'ALL THREE AGREE!', 'SCREEEEE!'],
       angry: ['DESTROY!!!', 'ERRORS! CHAOS! RUIN!', 'LIGHTNING STRIKE!', 'ALL WILL BURN!'],
-      sleeping: ['...dormant...', 'zzzGHIDORAHzzz', 'Three heads, one dream...'],
+
       victory: ['WE ARE SUPREME!', 'BOW TO GHIDORAH!', 'SCREEEEEEE!!!', 'CHAOS WINS!'],
       alert: ['*static crackle*', 'We sense disturbance.', 'Three heads turn...'],
       typing: ['*three heads watch*', 'We observe your keystrokes.', '...interesting...'],
@@ -136,14 +136,14 @@ export const MONSTERS: Record<MonsterId, MonsterPersonality> = {
     animationSpeed: 2.0,
     jitterIntensity: 'high',
     angerThreshold: 0.7,
-    sleepMultiplier: 0.6,
+
     imagePath: 'monsters/rodan_spritesheet.png',
     isFlyer: true,
     moodMessages: {
       idle: ['*wind rush*', 'Scanning horizon...', 'Alert. Always alert.', '*wing rustle*'],
       happy: ['SCREEEECH!', 'Thermal rising!', 'FAST! FAST! FAST!', 'RODAN SOARS!'],
       angry: ['SCREEEE!', 'FIRE DEMON WAKES!', 'YOU WILL BURN!', 'FASTER! NO ERRORS!'],
-      sleeping: ['*soft wing fold*', 'zzzRODANzzz', 'Perched and dreaming...'],
+
       victory: ['SCREEEEE!!!', 'KING OF THE SKY!', 'FIRE VICTORY!', 'RODAN WINS!'],
       alert: ['*snaps to attention*', 'Movement detected!', 'WINGS READY!'],
       typing: ['*rapid wing beats*', 'So fast! So fast!', 'Every keystroke counts!'],
@@ -161,13 +161,13 @@ export const MONSTERS: Record<MonsterId, MonsterPersonality> = {
     animationSpeed: 1.0,
     jitterIntensity: 'low',
     angerThreshold: 0.8,
-    sleepMultiplier: 1.0,
+
     imagePath: 'monsters/mechagodzilla_spritesheet.png',
     moodMessages: {
       idle: ['*mechanical whir*', 'Systems nominal.', 'Scanning code...', 'Efficiency at 98%.'],
       happy: ['OPTIMIZATION COMPLETE.', 'NO ERRORS DETECTED.', 'SUPERIOR CODE.', 'AFFIRMATIVE.'],
       angry: ['ERRORS DETECTED.', 'EXTERMINATE BUGS.', 'SYSTEM MALFUNCTION.', 'PROCEED TO ELIMINATE.'],
-      sleeping: ['*engine idle*', 'Standby mode...', 'Recharging power cores.'],
+
       victory: ['APEX CODE ACHIEVED.', 'ALL TASKS COMPLETE.', 'VICTORY SECURED.'],
       alert: ['WARNING. ANOMALY.', 'SENSORS TRIGGERED.', 'THREAT LEVEL INCREASING.'],
       typing: ['PROCESSING INPUT...', 'Calculating keystrokes...', 'Data receiving...'],
@@ -185,13 +185,13 @@ export const MONSTERS: Record<MonsterId, MonsterPersonality> = {
     animationSpeed: 1.5,
     jitterIntensity: 'high',
     angerThreshold: 0.6,
-    sleepMultiplier: 0.7,
+
     imagePath: 'monsters/muto_spritesheet.png',
     moodMessages: {
       idle: ['*clicking sounds*', 'Seeking energy...', 'Radiation levels optimal.', '...'],
       happy: ['*EMP hums*', 'ENERGY SECURED.', 'FEEDING COMPLETE.', 'GROWTH PROGRESSING.'],
       angry: ['*screech*', 'ENERGY DEPLETED!', 'NETWORK DISRUPTED!', 'ATTACK!'],
-      sleeping: ['*dormant chitter*', 'zzzMUTOzzz', 'Incubating...'],
+
       victory: ['*triumphant roar*', 'PULSE COMPLETE.', 'ALL ENERGY DRAINED.'],
       alert: ['*antenna twitch*', 'Energy spike detected.', 'PREY NEAR.'],
       typing: ['*rapid clicking*', 'Interfering with signals...', 'Monitoring.'],
@@ -209,13 +209,13 @@ export const MONSTERS: Record<MonsterId, MonsterPersonality> = {
     animationSpeed: 1.2,
     jitterIntensity: 'medium',
     angerThreshold: 0.8,
-    sleepMultiplier: 1.2,
+
     imagePath: 'monsters/scylla_spritesheet.png',
     moodMessages: {
       idle: ['*chitter*', 'Freezing the environment...', 'Scuttling around.', 'Cold is good.'],
       happy: ['*happy clicks*', 'ICE AGE RETURNS.', 'PERFECT TEMPERATURE.', 'GLACIER SECURED.'],
       angry: ['*hiss*', 'TOO HOT!', 'MELTING AVOIDED!', 'FREEZE THEM ALL!'],
-      sleeping: ['*slow breathing*', 'Deep freeze...', 'Hibernating.'],
+
       victory: ['*scuttles rapidly*', 'FROZEN WASTELAND.', 'COLD VICTORY.'],
       alert: ['*legs tense*', 'Heat signature detected.', 'PREPARE TO FREEZE.'],
       typing: ['*tap tap tap*', 'Icy progress...', 'Chilling code.'],
