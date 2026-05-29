@@ -3,7 +3,16 @@
   "displayName": "Monsterverse Pet Companion",
   "description": "Interactive Monsterverse creature companions that react to your coding activity inside VS Code.",
   "version": "1.0.0",
-  "publisher": "monsterverse-dev",
+  "publisher": "Priyan-19",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Priyan-19/Monsterverse_Extention"
+  },
+  "homepage": "https://github.com/Priyan-19/Monsterverse_Extention#readme",
+  "bugs": {
+    "url": "https://github.com/Priyan-19/Monsterverse_Extention/issues"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },

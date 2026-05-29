@@ -167,24 +167,6 @@
         'MELTING AVOIDED!',
         'FREEZE THEM ALL!'
       ]
-    },
-    rodan: {
-      accent: '#ff4400',
-      glow: 'rgba(255, 68, 0, 0.2)',
-      animationSpeed: 2.0,
-      isFlyer: true,
-      clickMessages: [
-        '*wind rush*',
-        'Scanning horizon...',
-        'Alert. Always alert.',
-        '*wing rustle*'
-      ],
-      pokeMessages: [
-        'SCREEEE!',
-        'FIRE DEMON WAKES!',
-        'YOU WILL BURN!',
-        'FASTER! NO ERRORS!'
-      ]
     }
   };
 
