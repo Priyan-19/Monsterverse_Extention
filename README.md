@@ -1,13 +1,13 @@
 <div align="center">
 
-# 🦖 Monsterverse Extention
-### Gamified VS Code Extention ⚡🦍
+# 🦖 Monsterverse Companions
+### Gamified VS Code Extension ⚡🦍
 
 [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![VS Code](https://img.shields.io/badge/VS_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)](https://code.visualstudio.com/)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
-**Monsterverse Pet Companion** is a highly interactive, animated VS Code extension that brings the epic Titans of the Monsterverse straight into your editor. Built with TypeScript and the VS Code Webview API, it delivers a dynamic, gamified coding experience by reacting to your every keystroke.
+**Monsterverse Companions** is a highly interactive, animated VS Code extension that brings the epic Titans of the Monsterverse straight into your editor. Built with TypeScript and the VS Code Webview API, it delivers a dynamic, gamified coding experience by reacting to your every keystroke.
 
 </div>
 
@@ -84,7 +84,7 @@ The application follows a **modern, event-driven architecture**:
 ## 📂 Project Structure
 
 ```text
-monsterverse-pet-companion/
+monsterverse-companions/
 ├── src/                        # Extension Backend (TypeScript)
 │   ├── extension.ts            # Extension entry point & Webview logic
 │   ├── monsterManager.ts       # Monster configs and mood definitions
@@ -166,5 +166,5 @@ Access these commands through the VS Code Command Palette or via the native icon
 <div align="center">
   <p>Built with 🎮 for Epic Coding Sessions</p>
   <p>Developed by <strong>Priyan</strong></p>
-  <p>© 2026 Monsterverse Pet Companion. All Rights Reserved.</p>
+  <p>© 2026 Monsterverse Companions. All Rights Reserved.</p>
 </div>

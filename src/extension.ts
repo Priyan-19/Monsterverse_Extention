@@ -274,6 +274,15 @@ export function activate(context: vscode.ExtensionContext): void {
     })
   );
 
+  // ── Status Bar Item ──────────────────────────────────────────────────────
+  const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+  statusBarItem.command = 'monsterverse.showPanel';
+  // You can change $(hubot) to another codicon like $(squirrel) or $(smiley) if preferred
+  statusBarItem.text = '$(hubot) Monsterverse';
+  statusBarItem.tooltip = 'Show Monsterverse Companion';
+  statusBarItem.show();
+  context.subscriptions.push(statusBarItem);
+
   // ── Wire tracker → webview ───────────────────────────────────────────────
   tracker.on('stateChange', (state: TrackerState) => {
     activePetPanel?.sendState(state);

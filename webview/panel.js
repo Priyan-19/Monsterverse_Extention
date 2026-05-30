@@ -228,8 +228,8 @@
       this.element.className = 'monster-instance';
       this.element.style.left = `${this.currentX}px`;
       this.element.style.bottom = `${this.baseBottom}px`;
-      this.element.style.width = `${40 * this.scale}px`;
-      this.element.style.height = `${40 * this.scale}px`;
+      this.element.style.width = `${48 * this.scale}px`;
+      this.element.style.height = `${48 * this.scale}px`;
       this.element.style.setProperty('--accent', this.config.accent);
       this.element.style.setProperty('--glow', this.config.glow);
 
@@ -509,7 +509,7 @@
       if (message.message) {
         showFxPop(message.message);
       }
-      
+
       const match = activeMonsters.filter(m => m.id === message.monster);
       if (match.length > 0) {
         match.forEach(m => m.setMood(message.mood, message.message));

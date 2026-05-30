@@ -1,8 +1,8 @@
 {
-  "name": "monsterverse-pet-companion",
-  "displayName": "Monsterverse Pet Companion",
+  "name": "monsterverse",
+  "displayName": "Monsterverse Companions",
   "description": "Interactive Monsterverse creature companions that react to your coding activity inside VS Code.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "publisher": "Priyan-19",
   "license": "MIT",
   "repository": {
@@ -104,21 +104,12 @@
         "category": "Monsterverse"
       }
     ],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "monsterverse-sidebar",
-          "title": "Monsterverse Pet",
-          "icon": "media/sidebar-icon.svg"
-        }
-      ]
-    },
     "views": {
-      "monsterverse-sidebar": [
+      "explorer": [
         {
           "type": "webview",
           "id": "monsterverse.petView",
-          "name": "Pet Companion",
+          "name": "Hollow Earth",
           "retainContextWhenHidden": true
         }
       ]
